@@ -22,16 +22,19 @@ namespace _3dSoftware_Rendering
         public long currenttime;
         public static int[] m_scanBuffer;
 
-        Vertex minYVert = new Vertex(100, 50);
-        Vertex midYVert = new Vertex(0, 200);
-        Vertex maxYVert = new Vertex(50, 300);
+        Vertex minYVert = new Vertex(30, 0);
+        Vertex midYVert = new Vertex(50, 10);
+        Vertex maxYVert = new Vertex(0, 200);
 
+        Vertex minYVert1 = new Vertex(40, 15);
+        Vertex midYVert1 = new Vertex(200, 30);
+        Vertex maxYVert1 = new Vertex(100, 300);
         public Display()
         { 
             InitializeComponent();
 
             SetScene();
-            stars = new Stars3D(3, 64.0f, 10.0f,70.0f);
+            stars = new Stars3D(6, 64.0f, 10.0f,70.0f);
             pictureBox1.Image = myBitmap;
              
             FrameRate();
@@ -66,15 +69,22 @@ namespace _3dSoftware_Rendering
             currenttime = DateTime.Now.Ticks * 100;//DateTime.Now.Millisecond;
             float delta = (float)((currenttime - previoustime)/1000000000.0f);
             previoustime = currenttime;
-            stars.UpdateAndRender(ref myBitmap, delta);
+            //stars.UpdateAndRender(ref myBitmap, delta);
 
-            //for (int j = 100; j < 200; j++)
+            //for (int j = 100; j < 250; j++)
             //{
-            //    DrawScanBuffer(j, 300 - j, 300 + j);
+            //    DrawScanBuffer(j, 400 - j, 300 + j);
             //}
-            //myBitmap = new Bitmap(myBitmap.Width, myBitmap.Height);
+            myBitmap = new Bitmap(myBitmap.Width, myBitmap.Height);
+
+            ScanConvertTriangle(minYVert, midYVert, maxYVert, 0);
+            FillShape((int)minYVert.GetY(), (int)maxYVert.GetY(), Color.White);
+            ScanConvertTriangle(minYVert1, midYVert1, maxYVert1, 0);
+            FillShape((int)minYVert1.GetY(), (int)maxYVert1.GetY(), Color.White);
 
             //FillTriangle(maxYVert, midYVert,minYVert);
+
+
             return myBitmap;
         }
 
@@ -95,18 +105,26 @@ namespace _3dSoftware_Rendering
             m_scanBuffer[yCoord * 2 + 1] = xMax;
         }
 
+        
         public static void FillShape(int yMin, int yMax, Color colorChoice)
         {
             
             
             for (int j = yMin; j < yMax; j++)
             {
+                if (j >= myBitmap.Height)
+                {
+                    break;
+                }
                 int xMin = m_scanBuffer[j * 2];
                 int xMax = m_scanBuffer[j * 2 + 1];
 
                 for (int i = xMin; i < xMax; i++)
                 {
-                    
+                    if (i >= myBitmap.Width)
+                    {
+                        break;
+                    }
                     myBitmap.SetPixel(i, j, Color.FromArgb(255, colorChoice));
                 }
             }
@@ -174,6 +192,10 @@ namespace _3dSoftware_Rendering
 
             for (int j = yStart; j < yEnd; j++)
             {
+                if (j >= myBitmap.Height)
+                {
+                    break;
+                }
                 m_scanBuffer[j * 2 + whichSide] = (int)curX;
                 curX += xStep;
             }

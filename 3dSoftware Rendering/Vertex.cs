@@ -25,7 +25,7 @@ namespace _3dSoftware_Rendering
         public Vertex(float x, float y)
         {
             Random rand = new Random();
-            color = Color.FromArgb(255, rand.Next(255), rand.Next(255), rand.Next(255));
+            color = Color.FromArgb(255, 255, 0, 0);
             m_x = x;
             m_y = y;
         }
