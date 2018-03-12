@@ -22,19 +22,20 @@ namespace _3dSoftware_Rendering
         public long currenttime;
         public static int[] m_scanBuffer;
 
-        Vertex minYVert = new Vertex(30, 0);
-        Vertex midYVert = new Vertex(50, 10);
-        Vertex maxYVert = new Vertex(0, 200);
+        Vertex minYVert = new Vertex(-1, -1, 0);
+        Vertex midYVert = new Vertex( 0,  1, 0);
+        Vertex maxYVert = new Vertex( 1, -1, 0);
 
-        Vertex minYVert1 = new Vertex(40, 15);
-        Vertex midYVert1 = new Vertex(200, 30);
-        Vertex maxYVert1 = new Vertex(100, 300);
+        Matrix4f projection;
+
+        float rotCounter;
+
         public Display()
         { 
             InitializeComponent();
 
             SetScene();
-            stars = new Stars3D(6, 64.0f, 10.0f,70.0f);
+            stars = new Stars3D(3, 64.0f, 10.0f,70.0f);
             pictureBox1.Image = myBitmap;
              
             FrameRate();
@@ -48,6 +49,8 @@ namespace _3dSoftware_Rendering
             pictureBox1.Location = new Point(0, 0);
             m_scanBuffer = new int[pictureBox1.Height * 2];
             myBitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            projection =  Matrix4f.InitPerspective((float)ToRadian(70.0f), (float)(myBitmap.Width / myBitmap.Height), 0.1f, 1000.0f);
+            rotCounter = 0.0f;
         }
 
         private async void FrameRate()
@@ -57,7 +60,7 @@ namespace _3dSoftware_Rendering
             {
                 pictureBox1.Image = await DoWork();
                 //panel1.Refresh();
-                button1.Text = stars.times.ToString();
+                //button1.Text = stars.times.ToString();
             }
 
         }
@@ -71,18 +74,13 @@ namespace _3dSoftware_Rendering
             previoustime = currenttime;
             //stars.UpdateAndRender(ref myBitmap, delta);
 
-            //for (int j = 100; j < 250; j++)
-            //{
-            //    DrawScanBuffer(j, 400 - j, 300 + j);
-            //}
-            myBitmap = new Bitmap(myBitmap.Width, myBitmap.Height);
+            rotCounter += delta;
+            Matrix4f translation = Matrix4f.Translation(0.0f, 0.0f, 3.0f);
+            Matrix4f rotation = Matrix4f.InitRotation(0.0f, rotCounter, 0.0f);
+            Matrix4f transform = projection * (translation * rotation);
+            myBitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
 
-            ScanConvertTriangle(minYVert, midYVert, maxYVert, 0);
-            FillShape((int)minYVert.GetY(), (int)maxYVert.GetY(), Color.White);
-            ScanConvertTriangle(minYVert1, midYVert1, maxYVert1, 0);
-            FillShape((int)minYVert1.GetY(), (int)maxYVert1.GetY(), Color.White);
-
-            //FillTriangle(maxYVert, midYVert,minYVert);
+            FillTriangle(maxYVert.Transform(transform), midYVert.Transform(transform), minYVert.Transform(transform));
 
 
             return myBitmap;
@@ -91,12 +89,6 @@ namespace _3dSoftware_Rendering
         private void Display_SizeChanged(object sender, EventArgs e)
         {
             SetScene();
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            
         }
 
         public static void DrawScanBuffer(int yCoord, int xMin, int xMax)
@@ -132,9 +124,10 @@ namespace _3dSoftware_Rendering
 
         public static void FillTriangle(Vertex v1,Vertex v2, Vertex v3)
         {
-            Vertex minYVert = v1;
-            Vertex midYVert = v2;
-            Vertex maxYVert = v3;
+            Matrix4f screenSpaceTransform = Matrix4f.InitScreenSpaceTransform(myBitmap.Width / 2, myBitmap.Height / 2);
+            Vertex minYVert = v1.Transform(screenSpaceTransform).PerspectiveDivide();
+            Vertex midYVert = v2.Transform(screenSpaceTransform).PerspectiveDivide();
+            Vertex maxYVert = v3.Transform(screenSpaceTransform).PerspectiveDivide();
 
             if (maxYVert.GetY() < midYVert.GetY())
             {
@@ -200,6 +193,16 @@ namespace _3dSoftware_Rendering
                 curX += xStep;
             }
 
+        }
+
+        public static double ToRadian(double angle)
+        {
+            return (Math.PI * angle) / 180;
+        }
+
+        public static double ToDegree(double radian)
+        {
+            return radian * (180 / Math.PI);
         }
 
     }
