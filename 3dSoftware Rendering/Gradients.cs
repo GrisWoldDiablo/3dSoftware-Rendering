@@ -64,8 +64,8 @@ namespace _3dSoftware_Rendering
             m_texCoordXYStep = CalcYStep(m_texCoordX, minYVert, midYVert, maxYVert, oneOverdY);
             m_texCoordYXStep = CalcXStep(m_texCoordY, minYVert, midYVert, maxYVert, oneOverdX);
             m_texCoordYYStep = CalcYStep(m_texCoordY, minYVert, midYVert, maxYVert, oneOverdY);
-            m_oneOverZXStep  = CalcXStep(m_oneOverZ, minYVert, midYVert, maxYVert, oneOverdX);
-            m_oneOverZYStep  = CalcYStep(m_oneOverZ, minYVert, midYVert, maxYVert, oneOverdY);
+            m_oneOverZXStep  = CalcXStep(m_oneOverZ,  minYVert, midYVert, maxYVert, oneOverdX);
+            m_oneOverZYStep  = CalcYStep(m_oneOverZ,  minYVert, midYVert, maxYVert, oneOverdY);
 
 
         }

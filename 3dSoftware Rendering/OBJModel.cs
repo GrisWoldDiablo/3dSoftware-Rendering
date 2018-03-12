@@ -15,13 +15,13 @@ namespace _3dSoftware_Rendering
             private int m_texCoordIndex;
             private int m_normalIndex;
 
-            public int GetVertexIndex() { return m_vertexIndex; }
+            public int GetVertexIndex()   { return m_vertexIndex; }
             public int GetTexCoordIndex() { return m_texCoordIndex; }
-            public int GetNormalIndex() { return m_normalIndex; }
+            public int GetNormalIndex()   { return m_normalIndex; }
 
-            public void SetVertexIndex(int val) { m_vertexIndex = val; }
+            public void SetVertexIndex(int val)   { m_vertexIndex = val; }
             public void SetTexCoordIndex(int val) { m_texCoordIndex = val; }
-            public void SetNormalIndex(int val) { m_normalIndex = val; }
+            public void SetNormalIndex(int val)   { m_normalIndex = val; }
 
             //@Override
             public override bool Equals(Object obj)
@@ -53,8 +53,8 @@ namespace _3dSoftware_Rendering
         private List<Vector4f> m_texCoords;
         private List<Vector4f> m_normals;
         private List<OBJIndex> m_indices;
-        private bool m_hasTexCoords;
-        private bool m_hasNormals;
+        private bool           m_hasTexCoords;
+        private bool           m_hasNormals;
 
         private static String[] RemoveEmptyStrings(String[] data)
         {
@@ -64,8 +64,8 @@ namespace _3dSoftware_Rendering
                 if (!data[i].Equals(""))
                     result.Add(data[i]);
 
-            String[] res = new String[result.Count];
-            res = result.ToArray();
+            String[] res = result.ToArray(); //new String[result.Count];
+            //res = result.ToArray();
 
             return res;
         }

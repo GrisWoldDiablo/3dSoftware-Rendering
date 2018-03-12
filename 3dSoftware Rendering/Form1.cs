@@ -58,30 +58,32 @@ namespace _3dSoftware_Rendering
             myBitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             projection = Matrix4f.InitPerspective((float)ToRadian(70.0f),
                 (float)(pictureBox1.Width / pictureBox1.Height), 0.1f, 1000.0f);
-            //texture = new Bitmap(16, 16);
+            //texture = new Bitmap(64, 64);
             //Random rand = new Random();
             //for (int i = 0; i < texture.Height; i++)
             //{
             //    for (int j = 0; j < texture.Width; j++)
             //    {
-            //        if ((i + j) % 2 == 0)
-            //        {
-            //            texture.SetPixel(j, i,Color.FromArgb(255,0,0));
-            //        }
-            //        else
-            //        {
-            //            texture.SetPixel(j, i, Color.FromArgb(255, 0, 255));
-            //        }
-            //        //texture.SetPixel(j, i, 
-            //        //    Color.FromArgb(
-            //        //        rand.Next(1, 255),
-            //        //        rand.Next(1, 255),
-            //        //        rand.Next(1, 255)
-            //        //    ));
+            //        //if ((i + j) % 2 == 0)
+            //        //{
+            //        //    texture.SetPixel(j, i, Color.FromArgb(255, 0, 0));
+            //        //}
+            //        //else
+            //        //{
+            //        //    texture.SetPixel(j, i, Color.FromArgb(255, 0, 255));
+            //        //}
+            //        texture.SetPixel(j, i,
+            //            Color.FromArgb(
+            //                rand.Next(1, 255),
+            //                rand.Next(1, 255),
+            //                rand.Next(1, 255)
+            //            ));
             //    }
             //}
+
+            //texture = new Bitmap("../../GW_avatar.jpg");
             
-            texture = new Bitmap("../../GW_avatar.jpg");
+            texture = new Bitmap("../../Horizon.jpg");
             //texture = new Bitmap("../../BricksPattern.png");
             mesh = new Mesh("../../icosphere.obj");
 
@@ -234,41 +236,14 @@ namespace _3dSoftware_Rendering
             for (int i = xMin; i < xMax; i++)
             {
                 float z = 1.0f / oneOverZ;
-                int srcX = (int)((texCoordX * z) * ((float)(texture.Width - 1) * 0.5f));
-                int srcY = (int)((texCoordY * z) * ((float)(texture.Height - 1) * 0.5f));
-                //if (srcX < 0)
+                int srcX = (int)((texCoordX * z) * (float)(texture.Width - 1) /*+ 0.5f*/);
+                int srcY = (int)((texCoordY * z) * (float)(texture.Height - 1) /*+ 0.5f*/);
+
+                //if (srcX >= texture.Width)
                 //{
-                //    srcX = Math.Abs(srcX);
-                //}
-                //while (srcX >= texture.Width)
-                //{
-                //    //MessageBox.Show("srcX to big");
-                //    srcX = 0;
+                //    MessageBox.Show("srcX >= texture.Width");
                 //}
                 
-                
-                //if (srcY < 0)
-                //{
-                //    srcY = Math.Abs(srcY);
-                //}
-                //while (srcY >= texture.Height)
-                //{
-                //    //MessageBox.Show("srcY to big");
-                //    srcY = 0;
-                //}
-                
-                
-                //if (i >= myBitmap.Height || i < 0)
-                //{
-                //    //MessageBox.Show("i to big");
-                //    continue;
-                //}
-                //if (j >= myBitmap.Width || j < 0)
-                //{
-                //    //MessageBox.Show("j to big");
-                //    continue;
-                //}
-                //myBitmap.SetPixel(i,j, texture.GetPixel(srcX, srcY));
                 try
                 {
                    myBitmap.SetPixel(i, j, texture.GetPixel(srcX, srcY));

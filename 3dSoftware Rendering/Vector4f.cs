@@ -41,14 +41,14 @@ namespace _3dSoftware_Rendering
             return (this[0] * other[0]) + (this[1] * other[1]) + (this[2] * other[2]) + (this[3] * other[3]);
         }
 
-        public Vector4f Cross( Vector4f other)
+        public Vector4f Cross(Vector4f other)
         {
             Vector4f result = new Vector4f(new float[]
             {
-                (this[1] * other[2]) - (other[1]  * this[2]),
-                (this[2] * other[0]) - (other[2]  * this[0]),
-                (this[0] * other[1]) - (other[0]  * this[1]),
-                1.0f
+                (this[1] * other[2]) - (this[2] * other[1]),
+                (this[2] * other[0]) - (this[0] * other[2]),
+                (this[0] * other[1]) - (this[1] * other[0]),
+                0.0f
             });
 
             return result;
@@ -58,9 +58,9 @@ namespace _3dSoftware_Rendering
         {
             Vector4f result = new Vector4f(new float[]
             {
-                (left[1] * right[2]) - (right[1]  * left[2]),
-                (left[2] * right[0]) - (right[2]  * left[0]),
-                (left[0] * right[1]) - (right[0]  * left[1]),
+                (left[1] * right[2]) - (right[1] * left[2]),
+                (left[2] * right[0]) - (right[2] * left[0]),
+                (left[0] * right[1]) - (right[0] * left[1]),
                 0.0f
             });
 
@@ -71,13 +71,13 @@ namespace _3dSoftware_Rendering
         {
             float length = this.GetLength(); 
 
-            return this * (1.0f / length);
-            //return new Vector4f(this[0] / length, this[1] / length, this[2] / length, 1);
+            //return this * (1.0f / length);
+            return new Vector4f(this[0] / length, this[1] / length, this[2] / length, this[3] / length);
         }
 
         public float GetLength()
         {
-            return (float)Math.Sqrt(Math.Pow(this[0], 2) + Math.Pow(this[1], 2) + Math.Pow(this[2], 2));
+            return (float)Math.Sqrt(Math.Pow(this[0], 2) + Math.Pow(this[1], 2) + Math.Pow(this[2], 2) + Math.Pow(this[3], 2));
         }
 
         public double GetAngle(Vector4f other)
