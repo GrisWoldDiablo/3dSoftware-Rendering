@@ -41,6 +41,19 @@ namespace _3dSoftware_Rendering
             return (this[0] * other[0]) + (this[1] * other[1]) + (this[2] * other[2]) + (this[3] * other[3]);
         }
 
+        public Vector4f Cross( Vector4f other)
+        {
+            Vector4f result = new Vector4f(new float[]
+            {
+                (this[1] * other[2]) - (other[1]  * this[2]),
+                (this[2] * other[0]) - (other[2]  * this[0]),
+                (this[0] * other[1]) - (other[0]  * this[1]),
+                1.0f
+            });
+
+            return result;
+        }
+
         public static Vector4f Cross(Vector4f left, Vector4f right)
         {
             Vector4f result = new Vector4f(new float[]
@@ -48,7 +61,7 @@ namespace _3dSoftware_Rendering
                 (left[1] * right[2]) - (right[1]  * left[2]),
                 (left[2] * right[0]) - (right[2]  * left[0]),
                 (left[0] * right[1]) - (right[0]  * left[1]),
-                1.0f
+                0.0f
             });
 
             return result;
@@ -59,7 +72,7 @@ namespace _3dSoftware_Rendering
             float length = this.GetLength(); 
 
             return this * (1.0f / length);
-            return new Vector4f(this[0] / length, this[1] / length, this[2] / length, 1);
+            //return new Vector4f(this[0] / length, this[1] / length, this[2] / length, 1);
         }
 
         public float GetLength()
@@ -82,6 +95,11 @@ namespace _3dSoftware_Rendering
         public static double Distance(Vector4f v1, Vector4f v2)
         {
             return Math.Sqrt(Math.Pow(v1[0] - v2[0], 2) + Math.Pow(v1[1] - v2[1], 2) + Math.Pow(v1[2] - v2[2], 2));
+        }
+
+        public Vector4f Lerp(Vector4f dest, float lerpFactor)
+        {
+            return ((dest - this) * lerpFactor) + this;
         }
 
         public static Vector4f operator +(Vector4f left, Vector4f right)
